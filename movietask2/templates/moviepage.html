@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MOVIE WEB</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container-fluid">
+    {% include 'navbar.html' %}
+</div>
+
+<div class="container">
+    <div class="row">
+        {% for i in page_obj %}
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem; margin-bottom: 20px; height:900px; margin-top: 20px;">
+                <img class="card-img-top" src="{{ i.img.url }}" alt="Card image cap" height="250px">
+                <div class="card-body">
+                    <h5 class="card-title">{{ i.name }}</h5>
+                    <p class="card-text">{{ i.desc }}</p>
+                    <p class="card-text">{{ i.date }}</p>
+                    <p class="card-text">{{ i.actors }}</p>
+                    <a href="{{ i.youtube_link }}">Watch on YouTube</a>
+                    <a href="{% url 'movie:detail' i.id %}" class="btn btn-primary">click here</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+   <div class="mx-auto">
+    {% if page_obj.paginator.num_pages %}
+    <hr>
+    <div class="text-center">
+        {% for pg in page_obj.paginator.page_range %}
+        <a href="?page={{pg}}" class="btn btn-light btn-sm {% if page_obj.number == pg %} active {% endif %}">{{pg}}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% include 'footer.html' %}
+
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

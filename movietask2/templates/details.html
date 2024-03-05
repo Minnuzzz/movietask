@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MOVIE WEB</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container-fluid">
+    {% include 'navbar.html' %}
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ movie.img.url }}" class="img-fluid rounded" alt="{{ movie.name }}">
+        </div>
+        <div class="col-md-6">
+            <h1 class="display-4">{{ movie.name }}</h1>
+            <div class="description-box bg-light p-3 rounded">
+                <p class="lead">{{ movie.desc }}</p>
+            </div>
+            <p><strong>Release Date:</strong> {{ movie.date}}</p>
+            <p><strong>Actors:</strong> {{ movie.actors }}</p>
+            <p><strong>Category:</strong> {{ movie.category }}</p>
+            <a href="{{ movie.youtube_link }}" class="btn btn-primary btn-lg mr-2" role="button">Watch on YouTube</a>
+            <div class="d-inline-block mt-3">
+                <a href="{% url 'movie:update' movie.id %}" class="btn btn-warning mr-2">Update</a>
+                <a href="{% url 'movie:delete' id=movie.id %}" class="btn btn-danger">Delete</a>
+            </div>
+
+            <div>
+                <h2>Reviews</h2>
+                {% for review in reviews %}
+                    <p>{{ review.rating }} - {{ review.review_text }}</p>
+                {% empty %}
+                    <p>No reviews yet.</p>
+                {% endfor %}
+
+                <h2>Add a Review</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

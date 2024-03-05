@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Title</title>
+</head>
+<body>
+   {% include 'navbar.html' %}
+    {% if category %}
+        <div class="container-fluid">
+            <div class="row my_row_class">
+                <div class="mx-auto">
+                    <p> <a href="{% url 'movie:allmoviecat' category.slug %}">Movie Categories</a> </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="container">
+        <div class="row">
+            {% for movie in movies.object_list %}
+                <div class="my-bottom-margin col-12 col-sm-6 col-md-4 col-lg-4">
+                    <div class="card text-center">
+                        <img class="card-img-top" src="{{ movie.img.url }}" alt="Card image cap" height="250px">
+                        <div class="card-body" style="height:600px;">
+                            <h4 class="card-title">{{movie.name}}</h4>
+                            <p class="card-content">{{movie.desc}}</p>
+                            <a href="{% url 'movie:detail' movie.id %}" class="btn btn-primary">click here</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mx-auto">
+            {% if movies.paginator.num_pages %}
+            <hr>
+            <div class="text-center">
+                {% for pg in movies.paginator.page_range %}
+                 <a href="?page={{pg}}" class="btn btn-light btn-sm {% if movies.number == pg %} active {% endif %}">{{pg}}</a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <br>
+    </div>
+</body>
+{% include 'footer.html' %}
+<script src="{% static 'js/popper.min.js' %}" ></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</html>

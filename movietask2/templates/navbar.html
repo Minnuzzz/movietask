@@ -1,0 +1,51 @@
+<body>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-sm">
+        <a class="navbar-brand" href="#">
+            ONLINE MOVIE SITE
+        </a>
+        <li class="nav-item dropdown {% if 'movie' in request.path %} active {% endif %}">
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <ul>
+                    <li><a class="dropdown-item" href="{% url 'movie:allmoviecat' 'default-slug' %}">All Movies</a></li>
+                    {% for cat in links %}
+                    <li><a class="dropdown-item" href="{{ cat.get_url }}">{{cat.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="mx-auto" style="padding-right:100px;">
+      <form class="form-inline my-2 my-lg-0" role="search" action="{% url 'searchapp:searchresult' %}" method="get">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="q" aria-label="Search">
+        <button class="btn btn-outline-success float-right" type="submit"><i class="fa-brands fa-searchengine"></i>Search</button>
+      </form>
+      </div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'credentials:profile' %}">Welcome, {{ user.username }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'credentials:logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'credentials:register' %}">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'credentials:login' %}">Login</a>
+                </li>
+                {% endif %}
+                 <a href="{% url 'movie:add_movie' %}" class="btn btn-light" style="float:right; color:black;">Add movie</a>
+            </ul>
+        </div>
+    </nav>
+</body>
